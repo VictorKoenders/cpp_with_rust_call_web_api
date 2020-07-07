@@ -1,0 +1,26 @@
+[package]
+name = "rust_web_api_caller"
+version = "0.1.0"
+authors = ["Trangar <victor.koenders@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+serde_json = "1.0"
+
+[dependencies.reqwest]
+version = "0.10"
+features = ["blocking", "json"]
+
+[dependencies.serde]
+version = "1.0"
+features = ["derive"]
+
+[dependencies.openssl]
+version = "0.10.30"
+features = ["vendored"]
+
+[lib]
+crate-type = ["staticlib"]
+
+[profile.release]
+lto = true
