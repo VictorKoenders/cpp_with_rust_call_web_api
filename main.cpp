@@ -26,7 +26,7 @@ int main()
 {
     const char *url = "https://google.com";
 
-    Result<Graph, Error> result = rust_url_get(reinterpret_cast<const uint8_t *>(url), strlen(url));
+    Result<Graph, Error> result = get_graph_from_url(reinterpret_cast<const uint8_t *>(url), strlen(url));
 
     if (result.tag == Result<Graph, Error>::Tag::Ok)
     {

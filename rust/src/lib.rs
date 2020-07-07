@@ -5,7 +5,7 @@ use objects::graph::Graph;
 use utils::{Error, Result};
 
 #[no_mangle]
-pub extern "C" fn rust_url_get(url: *const u8, len: usize) -> Result<Graph, Error> {
+pub extern "C" fn get_graph_from_url(url: *const u8, len: usize) -> Result<Graph, Error> {
     internal_get(url, len)
 }
 
