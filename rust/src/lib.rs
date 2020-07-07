@@ -1,27 +1,18 @@
+mod compat;
 mod objects;
-mod utils;
 
-use utils::{Error, Result};
+use compat::Error;
 
 fn internal_get<T>(url: *const u8, len: usize) -> Result<T, Error>
 where
     T: serde::de::DeserializeOwned,
 {
     let url_slice = unsafe { std::slice::from_raw_parts(url, len) };
-    let utf8_url = match std::str::from_utf8(url_slice) {
-        Ok(str) => str,
-        Err(_) => return Result::Err(Error::InvalidUrl),
-    };
+    let utf8_url = std::str::from_utf8(url_slice).map_err(|_| Error::InvalidUrl)?;
 
-    let result = match reqwest::blocking::get(utf8_url) {
-        Ok(result) => result,
-        Err(_) => return Result::Err(Error::NetworkError),
-    };
+    let result = reqwest::blocking::get(utf8_url).map_err(|_| Error::NetworkError)?;
 
-    let result: T = match result.json() {
-        Ok(result) => result,
-        Err(_) => return Result::Err(Error::InvalidResponse),
-    };
+    let result: T = result.json().map_err(|_| Error::InvalidResponse)?;
 
     Result::Ok(result)
 }
